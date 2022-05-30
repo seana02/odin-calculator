@@ -1,0 +1,58 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.calculator-container {
+    display: flex;
+    flex-direction: column;
+    background-color: darkblue;
+    color: white;
+    gap: 8px;
+    padding: 8px;
+}
+
+.row {
+    background-color: darkblue;
+    display: flex;
+    gap: 8px;
+}
+
+.button {
+    width: 80px;
+    height: 80px;
+    background-color: yellow;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+}
+
+#zero {
+    width: 168px;
+}
+
+.row4left {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.row4row {
+    display: flex;
+    gap: 8px;
+}
+
+#equal {
+    height: 168px;
+}
+
+.display {
+    font-size: 36px;
+    text-align: right;
+    flex: 1;
+    background-color: grey;
+    padding: 8px;
+}
