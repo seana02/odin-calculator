@@ -119,5 +119,44 @@ row4left.appendChild(row4btm);
 rows[3].appendChild(row4left);
 rows[3].appendChild(equal);
 }
+function reset() {
+    total = '0';
+    display.innerHTML = total;
+    mem1 = 0;
+    mem2 = 0;
+    operator = add;
+}
+function updateDisplay(d) {
+    display = document.querySelector('.display');
+    if (d === '0' || d === undefined) {
+        display.innerHTML = '0';
+    } else {
+        display.innerHTML = d;
+    }
+}
+
+let add = (a, b) => +a + +b;
+let subtract = (a, b) => +a - +b;
+let multiply = (a, b) => +a * +b;
+let divide = (a, b) => +a / +b;
+let pm = a => -a;
 
 init();
+let total = '0';
+let display = document.querySelector('.display');
+let mem1 = 0;
+let mem2 = 0;
+let operator = add;
+
+// 7 8 9 4 5 6 1 2 3 0
+let nums = Array.from(document.querySelectorAll('.num'));
+for (btn of nums) {
+    btn.addEventListener('click', (e) => {
+        if (total === '0') {
+            total = e.target.innerHTML;
+        } else if (total.length < 12) {
+            total += e.target.innerHTML;
+        }
+        updateDisplay(total);
+    });
+}
