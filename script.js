@@ -169,6 +169,9 @@ let multiply = (a, b) => {
     return checkOverflow(prod);
 };
 let divide = (a, b) => {
+    if (+b === 0) {
+        return 'Divide by Zero';
+    }
     let quot = `${+a / +b}`;
     return checkOverflow(quot);
 };
