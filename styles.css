@@ -20,7 +20,7 @@ body {
 }
 
 button {
-    width: 80px;
+    width: 81px;
     height: 80px;
     background-color: yellow;
     color: black;
@@ -37,7 +37,7 @@ button:active {
 }
 
 #zero {
-    width: 168px;
+    width: 170px;
 }
 
 .row4left {

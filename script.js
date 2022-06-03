@@ -122,9 +122,9 @@ rows[3].appendChild(equal);
 function reset() {
     total = '0';
     display.innerHTML = total;
-    mem1 = 0;
-    mem2 = 0;
+    mem = 0;
     operator = add;
+    overwrite = true;
 }
 function updateDisplay(d) {
     display = document.querySelector('.display');
@@ -134,29 +134,120 @@ function updateDisplay(d) {
         display.innerHTML = d;
     }
 }
+function checkOverflow(a) {
+    let str = a;
+    if (str.startsWith('-')) {
+        str = str.substring(1);
+    }
+    if (str.length > 12 && (str.indexOf('.') > 12 || str.indexOf('.') === -1)) {
+        return 'Overflow';
+    }
+    if (str.length > 12) {
+        return a.substr(0, 13);
+    }
+    return a;
+}
 
-let add = (a, b) => +a + +b;
-let subtract = (a, b) => +a - +b;
-let multiply = (a, b) => +a * +b;
-let divide = (a, b) => +a / +b;
+function operate() {
+    if (overwrite) return;
+    total = String(operator(mem, total));
+    mem = total;
+    updateDisplay(total);
+    overwrite = true;
+}
+
+let add = (a, b) => {
+    let sum = `${+a + +b}`;
+    return checkOverflow(sum);
+};
+let subtract = (a, b) => {
+    let diff = `${+a - +b}`;
+    return checkOverflow(diff);
+};
+let multiply = (a, b) => {
+    let prod = `${+a * +b}`;
+    return checkOverflow(prod);
+};
+let divide = (a, b) => {
+    let quot = `${+a / +b}`;
+    return checkOverflow(quot);
+};
 let pm = a => -a;
 
 init();
 let total = '0';
 let display = document.querySelector('.display');
-let mem1 = 0;
-let mem2 = 0;
+let mem = 0;
 let operator = add;
+let overwrite = true;
 
 // 7 8 9 4 5 6 1 2 3 0
 let nums = Array.from(document.querySelectorAll('.num'));
 for (btn of nums) {
     btn.addEventListener('click', (e) => {
-        if (total === '0') {
+        if (overwrite) {
             total = e.target.innerHTML;
+            overwrite = false;
         } else if (total.length < 12) {
             total += e.target.innerHTML;
         }
         updateDisplay(total);
     });
 }
+
+let acBtn = document.querySelector('#clear');
+acBtn.addEventListener('click', () => {
+    reset();
+});
+
+let decimal = document.querySelector('#decimal');
+decimal.addEventListener('click', (e) => {
+    if (!total.includes('.') && total.length < 12) {
+        total += e.target.innerHTML;
+    }
+    updateDisplay(total);
+});
+
+let pmBtn = document.querySelector('#pm');
+pmBtn.addEventListener('click', (e) => {
+    if (total === '0') {
+        return;
+    }
+    if (total.charAt(0) === '-') {
+        total = total.slice(1);
+    } else if (total.length < 13) {
+        total = '-' + total;
+    }
+    updateDisplay(total);
+})
+
+
+let ops = document.querySelectorAll('.operator');
+let divOp = ops[0];
+let multOp = ops[1];
+let minOp = ops[2];
+let plOp = ops[3];
+divOp.addEventListener('click', (e) => {
+    operate();
+    operator = divide;
+});
+
+multOp.addEventListener('click', (e) => {
+    operate();
+    operator = multiply;
+});
+
+minOp.addEventListener('click', (e) => {
+    operate();
+    operator = subtract;
+});
+
+plOp.addEventListener('click', (e) => {
+    operate();
+    operator = add;
+});
+
+let eqBtn = document.querySelector("#equal");
+eqBtn.addEventListener('click', (e) => {
+    operate();
+});
